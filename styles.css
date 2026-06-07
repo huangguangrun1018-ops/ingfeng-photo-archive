@@ -375,16 +375,36 @@ h3 {
   grid-row: span 2;
 }
 
+.photo-grid .photo-card.mosaic-panorama {
+  grid-column: span 6;
+  grid-row: span 2;
+}
+
 .photo-grid .photo-card.sea-tall,
 .photo-grid .photo-card.mosaic-tall {
   grid-column: span 2;
   grid-row: span 4;
 }
 
+.photo-grid .photo-card.mosaic-portrait {
+  grid-column: span 3;
+  grid-row: span 5;
+}
+
+.photo-grid .photo-card.mosaic-square {
+  grid-column: span 3;
+  grid-row: span 3;
+}
+
 .photo-grid .photo-card.sea-large,
 .photo-grid .photo-card.mosaic-large {
   grid-column: span 4;
   grid-row: span 4;
+}
+
+.photo-grid .photo-card.mosaic-hero {
+  grid-column: span 6;
+  grid-row: span 5;
 }
 
 .photo-grid .photo-button {
@@ -608,7 +628,11 @@ h3 {
   .photo-grid .photo-card.sea-wide,
   .photo-grid .photo-card.sea-large,
   .photo-grid .photo-card.mosaic-wide,
-  .photo-grid .photo-card.mosaic-large {
+  .photo-grid .photo-card.mosaic-large,
+  .photo-grid .photo-card.mosaic-panorama,
+  .photo-grid .photo-card.mosaic-portrait,
+  .photo-grid .photo-card.mosaic-square,
+  .photo-grid .photo-card.mosaic-hero {
     grid-column: span 4;
     grid-row: span 3;
   }
@@ -664,19 +688,23 @@ h3 {
 
   .photo-grid .photo-card,
   .photo-grid .photo-card.sea-wide,
-  .photo-grid .photo-card.mosaic-wide {
+  .photo-grid .photo-card.mosaic-wide,
+  .photo-grid .photo-card.mosaic-panorama,
+  .photo-grid .photo-card.mosaic-square {
     grid-column: span 2;
     grid-row: span 2;
   }
 
   .photo-grid .photo-card.sea-tall,
-  .photo-grid .photo-card.mosaic-tall {
+  .photo-grid .photo-card.mosaic-tall,
+  .photo-grid .photo-card.mosaic-portrait {
     grid-column: span 2;
     grid-row: span 3;
   }
 
   .photo-grid .photo-card.sea-large,
-  .photo-grid .photo-card.mosaic-large {
+  .photo-grid .photo-card.mosaic-large,
+  .photo-grid .photo-card.mosaic-hero {
     grid-column: span 4;
     grid-row: span 3;
   }
