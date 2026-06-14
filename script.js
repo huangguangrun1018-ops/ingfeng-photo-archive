@@ -9,6 +9,7 @@ const lightboxMeta = lightbox.querySelector("p");
 const closeButton = document.querySelector(".lightbox-close");
 const heroCarousel = document.querySelector("[data-profile-carousel]");
 const deferredImages = document.querySelectorAll("img[data-src]");
+const albumPreviewLimit = 15;
 
 function shuffleItems(items) {
   const shuffled = [...items];
@@ -105,6 +106,49 @@ function setupHeroCarousel() {
 }
 
 setupHeroCarousel();
+
+function setupAlbumPreviews() {
+  eventSections.forEach((section) => {
+    const gallery = section.querySelector(".gallery, .photo-grid");
+
+    if (!gallery) {
+      return;
+    }
+
+    const cards = Array.from(gallery.children).filter((item) => item.classList.contains("photo-card"));
+    const overflowCards = cards.slice(albumPreviewLimit);
+
+    if (overflowCards.length === 0) {
+      return;
+    }
+
+    const galleryId = `${section.id}-gallery`;
+    const moreButton = document.createElement("button");
+
+    gallery.id = galleryId;
+    section.classList.add("has-album-overflow");
+    overflowCards.forEach((card) => card.classList.add("album-overflow-item"));
+
+    moreButton.className = "album-more-button";
+    moreButton.type = "button";
+    moreButton.setAttribute("aria-controls", galleryId);
+    moreButton.setAttribute("aria-expanded", "false");
+    moreButton.innerHTML = `<span>查看更多</span><small>剩余 ${overflowCards.length} 张</small>`;
+
+    moreButton.addEventListener("click", () => {
+      const isExpanded = moreButton.getAttribute("aria-expanded") === "true";
+
+      overflowCards.forEach((card) => card.classList.toggle("is-revealed", !isExpanded));
+      moreButton.setAttribute("aria-expanded", String(!isExpanded));
+      moreButton.querySelector("span").textContent = isExpanded ? "查看更多" : "收起照片";
+      moreButton.querySelector("small").textContent = isExpanded ? `剩余 ${overflowCards.length} 张` : `已显示全部 ${cards.length} 张`;
+    });
+
+    gallery.insertAdjacentElement("afterend", moreButton);
+  });
+}
+
+setupAlbumPreviews();
 
 function loadDeferredImage(image) {
   const src = image.dataset.src;
