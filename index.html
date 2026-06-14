@@ -10,7 +10,7 @@
     <meta property="og:title" content="镜风" />
     <meta property="og:url" content="https://www.jingfeng1018.com/" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="styles.css?v=20260614-profile-compact" />
+    <link rel="stylesheet" href="styles.css?v=20260614-hero-carousel" />
   </head>
   <body>
     <header class="site-header">
@@ -90,9 +90,11 @@
             这是镜风的兽聚返图，大家闲来无事可以看看～
           </p>
         </div>
-        <figure class="hero-photo">
-          <img src="assets/thumbs/hero-cover.jpg" alt="桃花湖小聚封面图" decoding="async" fetchpriority="high" />
-          <figcaption>2026.03.20 / 桃花湖小聚</figcaption>
+        <figure class="hero-photo hero-carousel" data-profile-carousel>
+          <div class="hero-carousel-frame">
+            <img class="hero-slide is-active" src="assets/thumbs/profile/thumb-001.jpg" alt="镜风个人展示随机轮播" decoding="async" fetchpriority="high" />
+          </div>
+          <figcaption>个人展示 / 随机轮播</figcaption>
         </figure>
       </section>
 
@@ -5175,6 +5177,6 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=20260614-hero-carousel"></script>
   </body>
 </html>
