@@ -8,6 +8,7 @@ const lightboxTitle = lightbox.querySelector("h2");
 const lightboxMeta = lightbox.querySelector("p");
 const closeButton = document.querySelector(".lightbox-close");
 const heroCarousel = document.querySelector("[data-profile-carousel]");
+const deferredImages = document.querySelectorAll("img[data-src]");
 
 function shuffleItems(items) {
   const shuffled = [...items];
@@ -37,17 +38,35 @@ function setupHeroCarousel() {
   frame.innerHTML = selectedShots
     .map((button, index) => {
       const image = button.querySelector("img");
-      const src = image ? image.getAttribute("src") : "";
+      const src = image ? image.dataset.src || image.getAttribute("src") : "";
       const alt = image ? image.getAttribute("alt") : "镜风个人展示";
       const activeClass = index === 0 ? " is-active" : "";
-      const priority = index === 0 ? ' fetchpriority="high"' : "";
+      const sourceAttributes =
+        index === 0
+          ? `src="${src}" fetchpriority="high"`
+          : `src="assets/placeholder.svg" data-carousel-src="${src}"`;
 
-      return `<img class="hero-slide${activeClass}" src="${src}" alt="${alt}" decoding="async"${priority} />`;
+      return `<img class="hero-slide${activeClass}" ${sourceAttributes} alt="${alt}" decoding="async" />`;
     })
     .join("");
 
   const slides = Array.from(frame.querySelectorAll(".hero-slide"));
   let currentIndex = 0;
+
+  function loadCarouselSlide(slide) {
+    const src = slide.dataset.carouselSrc;
+
+    if (!src) {
+      return;
+    }
+
+    slide.src = src;
+    slide.removeAttribute("data-carousel-src");
+  }
+
+  function preloadNextSlide() {
+    loadCarouselSlide(slides[(currentIndex + 1) % slides.length]);
+  }
 
   if (caption && selectedShots[0]) {
     caption.textContent = selectedShots[0].dataset.title || "个人展示 / 随机轮播";
@@ -57,18 +76,75 @@ function setupHeroCarousel() {
     return;
   }
 
-  window.setInterval(() => {
-    slides[currentIndex].classList.remove("is-active");
-    currentIndex = (currentIndex + 1) % slides.length;
-    slides[currentIndex].classList.add("is-active");
+  window.setTimeout(preloadNextSlide, 1600);
 
-    if (caption && selectedShots[currentIndex]) {
-      caption.textContent = selectedShots[currentIndex].dataset.title || "个人展示 / 随机轮播";
+  window.setInterval(() => {
+    const nextIndex = (currentIndex + 1) % slides.length;
+    const nextSlide = slides[nextIndex];
+
+    loadCarouselSlide(nextSlide);
+
+    const showNextSlide = () => {
+      slides[currentIndex].classList.remove("is-active");
+      currentIndex = nextIndex;
+      nextSlide.classList.add("is-active");
+
+      if (caption && selectedShots[currentIndex]) {
+        caption.textContent = selectedShots[currentIndex].dataset.title || "个人展示 / 随机轮播";
+      }
+
+      window.setTimeout(preloadNextSlide, 1600);
+    };
+
+    if (nextSlide.complete && nextSlide.naturalWidth > 0) {
+      showNextSlide();
+    } else {
+      nextSlide.addEventListener("load", showNextSlide, { once: true });
     }
   }, 3600);
 }
 
 setupHeroCarousel();
+
+function loadDeferredImage(image) {
+  const src = image.dataset.src;
+
+  if (!src) {
+    return;
+  }
+
+  image.src = src;
+  image.fetchPriority = "low";
+  image.removeAttribute("data-src");
+}
+
+function setupDeferredImages() {
+  if (!("IntersectionObserver" in window)) {
+    deferredImages.forEach(loadDeferredImage);
+    return;
+  }
+
+  const imageObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        loadDeferredImage(entry.target);
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      rootMargin: "700px 0px",
+      threshold: 0.01,
+    },
+  );
+
+  deferredImages.forEach((image) => imageObserver.observe(image));
+}
+
+setupDeferredImages();
 
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {

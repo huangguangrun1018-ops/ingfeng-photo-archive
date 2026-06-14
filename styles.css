@@ -376,6 +376,8 @@ h3 {
 
 .event-section {
   border-top: 1px solid var(--line);
+  contain-intrinsic-size: auto 1200px;
+  content-visibility: auto;
   padding: clamp(50px, 7vw, 92px) clamp(20px, 5vw, 72px) 0;
 }
 
@@ -558,6 +560,8 @@ h3 {
 .profile {
   align-items: stretch;
   border-top: 1px solid var(--line);
+  contain-intrinsic-size: auto 1200px;
+  content-visibility: auto;
   display: grid;
   gap: clamp(18px, 3vw, 34px);
   grid-template-columns: minmax(260px, 0.86fr) minmax(220px, 0.52fr) minmax(240px, 0.62fr);
