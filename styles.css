@@ -602,6 +602,67 @@ h3 {
   margin: 0;
 }
 
+.profile-gallery {
+  display: grid;
+  gap: clamp(7px, 0.9vw, 12px);
+  grid-auto-flow: dense;
+  grid-auto-rows: clamp(58px, 5.2vw, 82px);
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  padding-top: clamp(8px, 1.4vw, 18px);
+}
+
+.profile-shot {
+  border-color: color-mix(in srgb, var(--line-soft) 78%, transparent);
+  border-radius: 6px;
+  box-shadow: none;
+  display: block;
+  grid-column: span 2;
+  grid-row: span 3;
+  height: 100%;
+  min-height: 0;
+}
+
+.profile-shot img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-shot.profile-wide {
+  grid-column: span 4;
+  grid-row: span 3;
+}
+
+.profile-shot.profile-panorama {
+  grid-column: span 6;
+  grid-row: span 3;
+}
+
+.profile-shot.profile-portrait {
+  grid-column: span 3;
+  grid-row: span 5;
+}
+
+.profile-shot.profile-tall {
+  grid-column: span 2;
+  grid-row: span 5;
+}
+
+.profile-shot.profile-square {
+  grid-column: span 3;
+  grid-row: span 3;
+}
+
+.profile-shot.profile-large {
+  grid-column: span 4;
+  grid-row: span 4;
+}
+
+.profile-shot.profile-hero {
+  grid-column: span 5;
+  grid-row: span 5;
+}
+
 .contact {
   align-items: center;
   border-top: 1px solid var(--line);
@@ -701,6 +762,27 @@ h3 {
     min-height: 360px;
   }
 
+  .profile-gallery {
+    grid-auto-rows: clamp(54px, 7.6vw, 76px);
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .profile-shot,
+  .profile-shot.profile-tall,
+  .profile-shot.profile-portrait {
+    grid-column: span 2;
+    grid-row: span 3;
+  }
+
+  .profile-shot.profile-wide,
+  .profile-shot.profile-panorama,
+  .profile-shot.profile-square,
+  .profile-shot.profile-large,
+  .profile-shot.profile-hero {
+    grid-column: span 4;
+    grid-row: span 3;
+  }
+
   .work-header {
     align-items: start;
     flex-direction: column;
@@ -784,6 +866,32 @@ h3 {
   .profile-list div {
     grid-template-columns: 1fr;
     gap: 6px;
+  }
+
+  .profile-gallery {
+    gap: 6px;
+    grid-auto-rows: clamp(48px, 16vw, 68px);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .profile-shot,
+  .profile-shot.profile-wide,
+  .profile-shot.profile-panorama,
+  .profile-shot.profile-square {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .profile-shot.profile-tall,
+  .profile-shot.profile-portrait {
+    grid-column: span 2;
+    grid-row: span 3;
+  }
+
+  .profile-shot.profile-large,
+  .profile-shot.profile-hero {
+    grid-column: span 4;
+    grid-row: span 3;
   }
 
   .albums {
