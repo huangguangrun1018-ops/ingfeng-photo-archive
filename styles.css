@@ -525,6 +525,105 @@ h3 {
   max-width: 760px;
 }
 
+.social {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: clamp(26px, 5vw, 86px);
+  grid-template-columns: minmax(180px, 0.38fr) minmax(0, 1fr);
+  padding: clamp(56px, 7vw, 92px) clamp(20px, 5vw, 72px);
+}
+
+.social-copy {
+  align-self: start;
+}
+
+.social h2 {
+  font-size: clamp(30px, 4.2vw, 58px);
+}
+
+.social-list {
+  display: grid;
+  gap: clamp(10px, 1.2vw, 16px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.social-account {
+  align-items: center;
+  background: color-mix(in srgb, var(--white) 82%, transparent);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 42px minmax(0, 1fr);
+  min-height: 74px;
+  padding: 14px;
+  transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.social-account:hover {
+  background: var(--white);
+  border-color: color-mix(in srgb, var(--blue) 50%, var(--line));
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--navy) 8%, transparent);
+  transform: translateY(-1px);
+}
+
+.social-icon {
+  align-items: center;
+  aspect-ratio: 1;
+  background: var(--navy);
+  border-radius: 8px;
+  color: var(--white);
+  display: inline-flex;
+  justify-content: center;
+  width: 42px;
+}
+
+.social-icon svg {
+  fill: currentColor;
+  height: 23px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  width: 23px;
+}
+
+.social-douyin .social-icon {
+  background: #101820;
+}
+
+.social-xhs .social-icon {
+  background: #c83d3d;
+}
+
+.social-bilibili .social-icon {
+  background: #4f95c7;
+}
+
+.social-x .social-icon {
+  background: #111111;
+}
+
+.social-text {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.social-text small {
+  color: var(--soft);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.social-text strong {
+  color: var(--navy);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
 .profile {
   align-items: stretch;
   border-top: 1px solid var(--line);
@@ -697,7 +796,8 @@ h3 {
 @media (max-width: 980px) {
   .hero,
   .profile,
-  .about {
+  .about,
+  .social {
     grid-template-columns: 1fr;
   }
 
@@ -794,9 +894,14 @@ h3 {
 
   .work-header,
   .profile,
-  .about {
+  .about,
+  .social {
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  .social-list {
+    grid-template-columns: 1fr;
   }
 
   .profile-photo {
