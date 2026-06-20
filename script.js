@@ -7,9 +7,9 @@ const lightboxTitle = lightbox.querySelector("h2");
 const lightboxMeta = lightbox.querySelector("p");
 const closeButton = document.querySelector(".lightbox-close");
 const heroCarousel = document.querySelector("[data-profile-carousel]");
-const deferredImages = document.querySelectorAll("img[data-src]");
-const albumPreviewLimit = 15;
+const albumPreviewLimit = 10;
 const isMobileViewport = window.matchMedia("(max-width: 700px)").matches;
+let imageObserver;
 
 function shuffleItems(items) {
   const shuffled = [...items];
@@ -141,6 +141,11 @@ function setupAlbumPreviews() {
       const isExpanded = moreButton.getAttribute("aria-expanded") === "true";
 
       overflowCards.forEach((card) => card.classList.toggle("is-revealed", !isExpanded));
+      if (isExpanded) {
+        scrollToSection(section);
+      } else {
+        observeDeferredImages(gallery);
+      }
       moreButton.setAttribute("aria-expanded", String(!isExpanded));
       moreButton.querySelector("span").textContent = isExpanded ? "查看更多" : "收起照片";
       moreButton.querySelector("small").textContent = isExpanded ? `剩余 ${overflowCards.length} 张` : `已显示全部 ${cards.length} 张`;
@@ -166,12 +171,18 @@ function loadDeferredImage(image) {
 }
 
 function setupDeferredImages() {
+  const deferredImages = document.querySelectorAll("img[data-src]");
+
   if (!("IntersectionObserver" in window)) {
-    deferredImages.forEach(loadDeferredImage);
+    deferredImages.forEach((image) => {
+      if (!image.closest(".album-overflow-item:not(.is-revealed)")) {
+        loadDeferredImage(image);
+      }
+    });
     return;
   }
 
-  const imageObserver = new IntersectionObserver(
+  imageObserver = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) {
@@ -188,7 +199,24 @@ function setupDeferredImages() {
     },
   );
 
-  deferredImages.forEach((image) => imageObserver.observe(image));
+  observeDeferredImages(document);
+}
+
+function observeDeferredImages(root) {
+  const deferredImages = root.querySelectorAll("img[data-src]");
+
+  deferredImages.forEach((image) => {
+    if (image.closest(".album-overflow-item:not(.is-revealed)")) {
+      return;
+    }
+
+    if (!imageObserver) {
+      loadDeferredImage(image);
+      return;
+    }
+
+    imageObserver.observe(image);
+  });
 }
 
 setupDeferredImages();
