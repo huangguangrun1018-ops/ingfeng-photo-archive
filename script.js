@@ -10,6 +10,7 @@ const closeButton = document.querySelector(".lightbox-close");
 const heroCarousel = document.querySelector("[data-profile-carousel]");
 const deferredImages = document.querySelectorAll("img[data-src]");
 const albumPreviewLimit = 15;
+const isMobileViewport = window.matchMedia("(max-width: 700px)").matches;
 
 function shuffleItems(items) {
   const shuffled = [...items];
@@ -39,7 +40,9 @@ function setupHeroCarousel() {
   frame.innerHTML = selectedShots
     .map((button, index) => {
       const image = button.querySelector("img");
-      const src = image ? image.dataset.src || image.getAttribute("src") : "";
+      const src = image
+        ? (isMobileViewport && image.dataset.mobileSrc) || image.dataset.src || image.getAttribute("src")
+        : "";
       const alt = image ? image.getAttribute("alt") : "镜风个人展示";
       const activeClass = index === 0 ? " is-active" : "";
       const sourceAttributes =
@@ -151,7 +154,7 @@ function setupAlbumPreviews() {
 setupAlbumPreviews();
 
 function loadDeferredImage(image) {
-  const src = image.dataset.src;
+  const src = (isMobileViewport && image.dataset.mobileSrc) || image.dataset.src;
 
   if (!src) {
     return;
@@ -160,6 +163,7 @@ function loadDeferredImage(image) {
   image.src = src;
   image.fetchPriority = "low";
   image.removeAttribute("data-src");
+  image.removeAttribute("data-mobile-src");
 }
 
 function setupDeferredImages() {
@@ -180,7 +184,7 @@ function setupDeferredImages() {
       });
     },
     {
-      rootMargin: "700px 0px",
+      rootMargin: isMobileViewport ? "120px 0px" : "700px 0px",
       threshold: 0.01,
     },
   );
