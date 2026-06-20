@@ -1,7 +1,6 @@
 const filterButtons = document.querySelectorAll(".filter-button");
 const photoCards = document.querySelectorAll(".photo-card");
 const eventSections = document.querySelectorAll(".event-section");
-const photoButtons = document.querySelectorAll(".photo-button");
 const lightbox = document.querySelector(".lightbox");
 const lightboxImage = lightbox.querySelector("img");
 const lightboxTitle = lightbox.querySelector("h2");
@@ -184,7 +183,7 @@ function setupDeferredImages() {
       });
     },
     {
-      rootMargin: isMobileViewport ? "120px 0px" : "700px 0px",
+      rootMargin: isMobileViewport ? "120px 0px" : "360px 0px",
       threshold: 0.01,
     },
   );
@@ -193,6 +192,21 @@ function setupDeferredImages() {
 }
 
 setupDeferredImages();
+
+function scrollToSection(section) {
+  if (!section) {
+    return;
+  }
+
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      section.scrollIntoView({
+        behavior: "auto",
+        block: "start",
+      });
+    });
+  });
+}
 
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -208,18 +222,24 @@ filterButtons.forEach((button) => {
     photoCards.forEach((card) => {
       card.classList.remove("hidden");
     });
+
+    scrollToSection(filter === "all" ? document.querySelector(".work-header") : document.getElementById(filter));
   });
 });
 
-photoButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    lightboxImage.src = button.dataset.full;
-    lightboxImage.alt = button.dataset.title;
-    lightboxTitle.textContent = button.dataset.title;
-    lightboxMeta.textContent = button.dataset.meta;
-    lightbox.hidden = false;
-    document.body.style.overflow = "hidden";
-  });
+document.addEventListener("click", (event) => {
+  const button = event.target.closest(".photo-button");
+
+  if (!button) {
+    return;
+  }
+
+  lightboxImage.src = button.dataset.full;
+  lightboxImage.alt = button.dataset.title;
+  lightboxTitle.textContent = button.dataset.title;
+  lightboxMeta.textContent = button.dataset.meta;
+  lightbox.hidden = false;
+  document.body.style.overflow = "hidden";
 });
 
 function closeLightbox() {

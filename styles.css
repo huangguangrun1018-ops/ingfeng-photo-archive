@@ -20,6 +20,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 82px;
 }
 
 body {
@@ -92,6 +93,14 @@ button {
 main {
   margin: 0 auto;
   max-width: 1520px;
+}
+
+.work-header,
+.event-section,
+.profile,
+.about,
+.social {
+  scroll-margin-top: 82px;
 }
 
 .hero {
